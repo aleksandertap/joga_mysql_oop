@@ -5,12 +5,16 @@ class ArticleModel extends BaseSQLModel {
     super("article");
   }
 
-  // async findAll() {
-  //   return super.findAll();
-  // }
-
   async findOne(slug) {
     return super.findOne('slug', slug);
+  }
+
+  async findMany(author) {
+    return super.findMany('author_id', author.id);
+  }
+
+  async create(article) {
+    return super.create(article);
   }
 }
 

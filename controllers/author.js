@@ -6,7 +6,7 @@ const ArticleModel = new articleDbModel();
 class authorController {
   async getAuthorById(req, res) {
     const author = await AuthorModel.findById(req.params.id);
-    const articles = await ArticleModel.findMany('author_id', author.id);
+    const articles = await ArticleModel.findMany(author);
     author["articles"] = articles;
     res.status(200).json({ author: author });
   }
