@@ -49,6 +49,17 @@ class articleController {
         article: { id: articleId, ...updatedArticleData },
       });
   }
+
+  async deleteArticle(req, res) {
+    const articleId = req.params.id;
+    const affectedRows = await ArticleModel.delete(articleId);
+    res
+      .status(201)
+      .json({
+        message: `deleted article with id ${articleId}`,
+      });
+  }
+  
 }
 
 module.exports = articleController;
