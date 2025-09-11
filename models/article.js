@@ -16,6 +16,10 @@ class ArticleModel extends BaseSQLModel {
   async create(article) {
     return super.create(article);
   }
+
+  async update(id, article) {
+    return super.update(id, article);
+  }
 }
 
 module.exports = ArticleModel;
