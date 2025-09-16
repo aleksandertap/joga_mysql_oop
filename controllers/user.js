@@ -14,12 +14,10 @@ class UserController {
       req.body.password.length >= 6 &&
       /\d/.test(req.body.password);
     if (!validPassword) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Password must be at least 6 characters and include at least one number",
-        });
+      return res.status(400).json({
+        error:
+          "Password must be at least 6 characters and include at least one number",
+      });
     }
 
     const cryptPassword = await bcrypt.hash(req.body.password, 10);
@@ -35,6 +33,24 @@ class UserController {
         .status(201)
         .json({ message: "New user is registered", user: req.session.user });
     }
+  }
+
+  async login(req, res) {
+    const userData = await userModel.findOne("username", req.body.username);
+    if (!userData) {
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
+
+    const passwordMatch = await bcrypt.compare(
+      req.body.password,
+      userData.password
+    );
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
+
+    req.session.user = { username: userData.username, userId: userData.id };
+    res.json({ message: "User logged in", user: req.session.user });
   }
 }
 
