@@ -5,10 +5,6 @@ class UserModel extends BaseSQLModel {
     super("user");
   }
 
-  async findById(id) {
-    return super.findById(id);
-  }
-
   async create(user) {
     return super.create(user);
   }

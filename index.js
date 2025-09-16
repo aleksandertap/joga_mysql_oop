@@ -18,7 +18,9 @@ app.use(
 const articleRouter = require("./routers/article");
 const authorRouter = require("./routers/author");
 const userRouter = require("./routers/user");
+const adminRouter = require("./routers/admin");
 
+app.use("/", adminRouter);
 app.use("/", authorRouter);
 app.use("/", articleRouter);
 app.use("/", userRouter);
