@@ -4,6 +4,24 @@ const userModel = new UserDbModel();
 
 class UserController {
   async register(req, res) {
+    const existingUser = await userModel.findOne("username", req.body.username);
+    if (existingUser) {
+      return res.status(409).json({ error: "Username already exists" });
+    }
+
+    const validPassword =
+      typeof req.body.password === "string" &&
+      req.body.password.length >= 6 &&
+      /\d/.test(req.body.password);
+    if (!validPassword) {
+      return res
+        .status(400)
+        .json({
+          error:
+            "Password must be at least 6 characters and include at least one number",
+        });
+    }
+
     const cryptPassword = await bcrypt.hash(req.body.password, 10);
     const registeredId = await userModel.create({
       username: req.body.username,

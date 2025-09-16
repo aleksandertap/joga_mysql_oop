@@ -21,6 +21,10 @@ class UserModel extends BaseSQLModel {
     return super.delete(id);
   }
 
+  async findOne(where, value) {
+    return super.findOne(where, value);
+  }
+
 }
 
 module.exports = UserModel;
