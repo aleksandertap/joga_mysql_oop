@@ -1,5 +1,6 @@
 const articleDbModel = require('../../models/article');
 const authorDbModel = require('../../models/author');
+
 const articleModel = new articleDbModel();
 const authorModel = new authorDbModel();
 
@@ -100,6 +101,7 @@ class adminArticleController {
             res.status(500).json({ message: 'Internal server error' });
         }
     }
+
 
 }
 

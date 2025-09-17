@@ -3,6 +3,8 @@ const router = express.Router();
 
 const articleControllerClass = require("../../controllers/admin/article");
 const articleController = new articleControllerClass();
+const userControllerClass = require("../../controllers/admin/user");
+const userController = new userControllerClass();
 
 // GET /admin - get all articles for admin view
 router.get("/", (req, res) => {
@@ -31,5 +33,25 @@ router.post("/article/edit/:id", (req, res) => {
 router.post("/article/delete/:id", (req, res) => {
   articleController.deleteArticle(req, res);
 });
+
+
+// User management routes
+router.get("/users", (req, res) => {
+  userController.getUsers(req, res);
+});
+
+router.post("/user/delete/:id", (req, res) => {
+  userController.deleteUser(req, res);
+});
+
+router.get("/user/edit/:id", (req, res) => {
+  userController.editUser(req, res);
+});
+
+router.post("/user/edit/:id", (req, res) => {
+  userController.updateUser(req, res);
+});
+
+
 
 module.exports = router;

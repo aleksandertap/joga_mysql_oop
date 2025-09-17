@@ -1,0 +1,17 @@
+<p class="breadcrumbs"><a href="/admin">Admin</a> &raquo;
+<h1>Edit User</h1>
+
+{{#user}}
+<form method="post" action="/admin/user/edit/{{id}}">
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" value="{{username}}"> 
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" value="{{email}}">
+    <label for="role">Role</label>
+    <select name="role" id="role">
+        <option value="user" {{#if (eq role "user")}}selected{{/if}}>User</option>
+        <option value="admin" {{#if (eq role "admin")}}selected{{/if}}>Admin</option>
+    </select>
+    <button>Update User</button>
+</form>
+{{/user}}

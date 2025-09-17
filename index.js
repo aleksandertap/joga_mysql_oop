@@ -25,6 +25,16 @@ app.engine(
     extname: "hbs",
     defaiultLayout: "main",
     layoutsDir: __dirname + "/views/layouts/",
+    // Add the custom 'ne' helper here
+    helpers: {
+      ne: (value1, value2) => {
+        return value1 !== value2;
+      },
+      // Add the custom 'eq' helper
+      eq: (value1, value2) => {
+        return value1 === value2;
+      },
+    },
   })
 );
 
