@@ -41,6 +41,21 @@ class adminController{
                 message: `deleted user with id ${userId}`,
             });
     }
+
+    async changeUserRole(req, res) {
+        const userId = req.params.id;
+        const newRole = req.body.role;
+        if (!["user", "admin"].includes(newRole)) {
+            return res.status(400).json({ error: "Invalid role specified" });
+        }
+        const affectedRows = await adminModel.update(userId, { role: newRole });
+        res
+            .status(201)
+            .json({
+                message: `changed role for user with id ${userId} to ${newRole}`,
+                user: { id: userId, role: newRole },
+            });
+    }
 }
 
 module.exports = adminController;

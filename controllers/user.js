@@ -49,8 +49,20 @@ class UserController {
       return res.status(401).json({ error: "Invalid username or password" });
     }
 
-    req.session.user = { username: userData.username, userId: userData.id };
+    req.session.user = { username: userData.username, userId: userData.id, role: userData.role };
     res.json({ message: "User logged in", user: req.session.user });
+  }
+
+  async logout(req, res) {
+    if(!req.session.user){
+      return res.status(400).json({ error: "No user is logged in" });
+    }
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ error: "Failed to log out" });
+      }
+      res.json({ message: "User logged out" });
+    });
   }
 }
 

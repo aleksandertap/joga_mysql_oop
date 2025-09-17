@@ -53,6 +53,10 @@ class articleController {
   async deleteArticle(req, res) {
     const articleId = req.params.id;
     const affectedRows = await ArticleModel.delete(articleId);
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Article not found" });
+    }
     res
       .status(201)
       .json({
