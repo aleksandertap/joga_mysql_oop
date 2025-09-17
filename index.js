@@ -48,8 +48,8 @@ const adminRouter = require('./routers/admin/admin');
 app.use('/admin', adminRouter);
 
 app.use('/', articleRouter);
-app.use('/author/', authorRouter);
-app.use('/users/', userRouter);
+app.use('/author', authorRouter);
+app.use('/users', userRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

@@ -3,10 +3,24 @@ const UserDbModel = require("../models/user");
 const userModel = new UserDbModel();
 
 class UserController {
+  async showRegisterForm(req, res) {
+    let message = null;
+    // Check if there's a message in the session
+    if (req.session.message) {
+        message = req.session.message;
+        // Clear the message after retrieving it
+        delete req.session.message;
+    }
+    // Pass the message to the template
+    res.render("user/register", { msg: message });
+}
+
   async register(req, res) {
     const existingUser = await userModel.findOne("username", req.body.username);
     if (existingUser) {
-      return res.status(409).json({ error: "Username already exists" });
+      // return res.status(409).json({ error: "Username already exists" });
+      req.session.message = "Username already exists";
+    return res.redirect('/users/register');
     }
 
     const validPassword =
@@ -14,10 +28,12 @@ class UserController {
       req.body.password.length >= 6 &&
       /\d/.test(req.body.password);
     if (!validPassword) {
-      return res.status(400).json({
-        error:
-          "Password must be at least 6 characters and include at least one number",
-      });
+      // return res.status(400).json({
+      //   error:
+      //     "Password must be at least 6 characters and include at least one number",
+      // });
+      req.session.message = "Password must be at least 6 characters and include at least one number";
+    return res.redirect('/users/register');
     }
 
     const cryptPassword = await bcrypt.hash(req.body.password, 10);
@@ -26,13 +42,7 @@ class UserController {
       email: req.body.email,
       password: cryptPassword,
     });
-    if (registeredId) {
-      const userData = await userModel.findById(registeredId);
-      req.session.user = { username: userData.username, userId: userData.id };
-      res
-        .status(201)
-        .json({ message: "New user is registered", user: req.session.user });
-    }
+    res.redirect('/');
   }
 
   async login(req, res) {
