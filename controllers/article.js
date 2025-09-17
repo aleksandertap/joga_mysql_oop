@@ -3,21 +3,13 @@ const ArticleModel = new articleDbModel();
 
 class articleController {
   async getAllArticles(req, res) {
-    try {
-      const articles = await ArticleModel.findAll();
-      res.status(201).json({ articles: articles });
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch articles" });
-    }
+    const articles = await ArticleModel.findAll();
+    res.render("index", { articles: articles });
   }
 
   async getArticleBySlug(req, res) {
-    try {
-      const article = await ArticleModel.findOne(req.params.slug);
-      res.status(201).json({ article: article });
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch article" });
-    }
+    const article = await ArticleModel.findOne(req.params.slug);
+    res.render("article", { article: article });
   }
 
   async createArticle(req, res) {
@@ -30,24 +22,23 @@ class articleController {
       author_id: req.body.author_id,
     };
     const articleId = await ArticleModel.create(newArticle);
-    res
-      .status(201)
-      .json({
-        message: `created article with id ${articleId}`,
-        article: { id: articleId, ...newArticle },
-      });
+    res.status(201).json({
+      message: `created article with id ${articleId}`,
+      article: { id: articleId, ...newArticle },
+    });
   }
 
   async updateArticle(req, res) {
     const articleId = req.params.id;
-      const updatedArticleData = req.body;
-      const affectedRows = await ArticleModel.update(articleId, updatedArticleData);
-    res
-      .status(201)
-      .json({
-        message: `updated article with id ${articleId}`,
-        article: { id: articleId, ...updatedArticleData },
-      });
+    const updatedArticleData = req.body;
+    const affectedRows = await ArticleModel.update(
+      articleId,
+      updatedArticleData
+    );
+    res.status(201).json({
+      message: `updated article with id ${articleId}`,
+      article: { id: articleId, ...updatedArticleData },
+    });
   }
 
   async deleteArticle(req, res) {
@@ -57,13 +48,10 @@ class articleController {
     if (affectedRows === 0) {
       return res.status(404).json({ error: "Article not found" });
     }
-    res
-      .status(201)
-      .json({
-        message: `deleted article with id ${articleId}`,
-      });
+    res.status(201).json({
+      message: `deleted article with id ${articleId}`,
+    });
   }
-  
 }
 
 module.exports = articleController;
