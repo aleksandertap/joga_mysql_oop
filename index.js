@@ -28,17 +28,26 @@ app.engine(
   })
 );
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 
-app.get('/', (req, res) => {
-    let query = ' select * from article';
-    let articles = []
-    conn.query(query, (err, result) => {
-        if (err) throw err;
-        articles = result;
-        res.render('index', { articles: articles });
-    })
-    
+app.get("/", (req, res) => {
+  let query = " select * from article";
+  let articles = [];
+  conn.query(query, (err, result) => {
+    if (err) throw err;
+    articles = result;
+    res.render("index", { articles: articles });
+  });
+});
+
+app.get("/article/:slug", (req, res) => {
+  let query = ` select * from article where slug = "${req.params.slug}"`;
+  let article;
+  conn.query(query, (err, result) => {
+    if (err) throw err;
+    article = result;
+    res.render("article", { article: article });
+  });
 });
 
 const articleRouter = require("./routers/article");
@@ -51,7 +60,6 @@ app.use("/", adminRouter);
 app.use("/", authorRouter);
 app.use("/", articleRouter);
 app.use("/", userRouter);
-
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
